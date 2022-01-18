@@ -1,0 +1,25 @@
+
+<form method="POST" action="/alterar-livro-exe" class="formulario">
+    <p>ID: {{id}}</p>
+    <p>Tipo: {{tipo}}</p>
+    
+    <input type="hidden" name="id" value="{{id}}">
+
+    <input type="text" name="nome" value="{{nome}}"><p>
+    <input type="text" name="autor" value="{{autor}}"><p>
+
+    <p>Tipo:</p>    
+    <input type="radio" name="tipo" value="Livro">
+    <label for="Livro">Livro</label><br>
+
+    <input type="radio" name="tipo" value="HQ">
+    <label for="HQ">HQs</label><br>
+
+    <input type="radio" name="tipo" value="DVD">
+    <label for="DVD">DVD</label><br>
+
+    <input type="radio" name="tipo" value="CD">
+    <label for="CD">CD</label><p>
+
+    <button type="submit" class="alt">Inserir</button>
+</form>

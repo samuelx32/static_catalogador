@@ -1,0 +1,100 @@
+body{
+    background: black;
+    color: #ccc;
+}
+header{
+    display: block;
+    width:100%;
+    float:left;
+}
+
+#menu{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#menu ul{
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+}
+
+#menu li{
+    padding-left:1em;
+}
+
+#menu a{
+    color: #ccc;
+    text-decoration: none;
+}
+
+#menu a:hover{
+    color: #FAFAFA;
+}
+
+
+hr {
+    width:80%;
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, transparent, #CCC, transparent);  
+    margin-bottom: 3em;
+}
+
+
+
+#conteudo{
+    display: block;
+    width:90%;
+    float:left;
+    margin-left: 10%; 
+}
+
+
+#conteudo table {
+    border-collapse: collapse;
+    width: 90%;
+}
+  
+#conteudo th, td {
+    padding: 8px;
+    text-align: left;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+#conteudo tr:nth-child(even) {background-color: #151515;}
+
+#conteudo button{
+    width:6em;
+    margin: 0.2em 0;
+}
+
+#conteudo button.alt{
+    background-color: #ccc;
+    border-color:#ccc;
+    border-radius: 0.4em;
+}
+
+#conteudo button.add{
+    background-color: #220A29;
+    border-color:#220A29;
+    color:#A4A4A4;
+    font-weight: bold;
+    border-radius: 0.4em;
+    margin-bottom: 2%;
+    height: 30px;
+    
+}
+
+#conteudo button.add:hover{
+    color:#fff;
+}
+
+#conteudo .formulario{
+    margin-left: 5%;
+}
+
+

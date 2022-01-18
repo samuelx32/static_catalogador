@@ -1,0 +1,57 @@
+<form method="get" action="/formulario">    
+    <button type="submit" class="add">NOVO</button>
+</form>    
+
+<table class="table">
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Autor</th>
+        <th>Tipo</th>
+        <th>Opções</th>
+    </tr>
+    {{#livros}}
+    <tr>
+        <th>{{id_livros}}</th>
+        <th>{{nome}}</th>
+        <th>{{autor}}</th>
+        <th>{{tipo}}</th>
+        <th>
+            <form action="/alterar-livro" method="POST">
+                <input type="hidden" name="id" value="{{id_livros}}">
+                <input type="hidden" name="nome" value="{{nome}}">
+                <input type="hidden" name="autor" value="{{autor}}">
+                <input type="hidden" name="tipo" value="{{tipo}}">
+                <button type="submit" class="alt">Alterar</button>
+            </form>
+
+            <form action="/deletar-livro" method="POST">
+                <input type="hidden" name="id" value="{{id_livros}}">
+                <button type="submit" class="alt">Deletar</button>
+            </form>
+        </th>
+    </tr>
+    {{/livros}}
+
+    {{#selecionado}}
+    <tr>
+        <th>{{id}}</th>
+        <th>{{nome}}</th>
+        <th>
+            <form action="/alterar-livro-form" method="POST">
+                <input type="hidden" name="id" value="{{id}}">
+                <input type="hidden" name="nome" value="{{nome}}">
+                <button type="submit" class="btn">Alterar</button>
+            </form>
+
+            <form action="/deletar-livro" method="POST">
+                <input type="hidden" name="id" value="{{id}}">
+                <button type="submit" class="btn">Deletar</button>
+            </form>
+        </th>
+    </tr>
+    {{/selecionado}}
+</table>
+
+
+
