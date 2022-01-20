@@ -28,23 +28,74 @@ connection.connect(function(err) {
     }
 })
 
+var sit = "deslogado";
+var msg;
+var id_atual = 0;
+var usuario_atual = "";
 //ROTAS
 
+server.get ('/login', (req,res) => {
+    res.render('login');
+})
 
-server.get('/', (req, res) => {
-    connection.query('SELECT * FROM livros', function (error, results, fields) {
-        var livros = results;
-        res.render('index', { livros, titulo: 'St4tic' });
+server.get ('/cadastro', (req,res) => {
+    res.render('cadastro');
+})
+
+server.post ('/valida-login', (req,res) => {
+    var usuario = req.body.usuario;
+    var senha = req.body.senha;
+
+    connection.query('SELECT * FROM usuarios WHERE usuario=? AND senha=?',[usuario, senha], function (error, results) {
+        if (error || results == ""){
+            msg = "Usuário ou Senha, Inválidos";
+            res.render('login', {msg, titulo: 'St4tic'});
+        }else{
+            results.map(function(item){
+                id_atual = item.id_usuario;
+                usuario_atual = item.usuario;
+            })
+            sit = "logado";
+            res.redirect('/');
+        }
+    });
+})
+
+server.post('/criar-login', (req, res) => {
+    msg = "Criado";
+    connection.query('INSERT INTO usuarios (nome, usuario, senha) values (?, ?, ?)', [req.body.nome, req.body.usuario, req.body.senha],function (error, results, fields) {
+        if(error){
+            msg = "Erro: "+error;
+        }
+        res.render('login', { msg, titulo: 'St4tic' });
     })
 })
 
+
+
+server.get('/', (req, res) => {
+    if(sit == "logado"){
+        connection.query('SELECT * FROM livros WHERE id_usuario=?',[id_atual], function (error, results, fields) {
+            var livros = results;
+            res.render('index', { livros, titulo: 'St4tic', usuario_atual });
+        })
+    }else{
+        res.render('login');
+    }
+    
+})
+
 server.get('/formulario', (req, res) => {
-    res.render('formulario',{titulo: 'Formulário'});
+    if(sit == "logado"){
+       res.render('formulario',{titulo: 'Formulário'});
+    }else{
+        res.render('login');
+    }
 })
 
 server.post('/adicionar-livro', (req, res) => {
-    var msg = "Adicionado";
-    connection.query('INSERT INTO livros (nome, autor, tipo) values (?, ?, ?)', [req.body.nome, req.body.autor, req.body.tipo],function (error, results, fields) {
+    msg = "Adicionado";
+    connection.query('INSERT INTO livros (nome, autor, tipo, id_usuario) values (?, ?, ?, ?)', [req.body.nome, req.body.autor, req.body.tipo, id_atual],function (error, results, fields) {
         if(error){
             msg = "Erro: "+error;
         }
@@ -61,7 +112,7 @@ server.post('/alterar-livro', (req, res) => {
 })
 
 server.post('/alterar-livro-exe', (req, res) => {
-    var msg = "Alterado";
+    msg = "Alterado";
     connection.query('UPDATE livros set nome=?, autor=?, tipo=? WHERE id_livros=?', [req.body.nome, req.body.autor, req.body.tipo, req.body.id],function (error, results, fields) {
         if(error){
             msg = "Erro: "+error;
@@ -71,7 +122,7 @@ server.post('/alterar-livro-exe', (req, res) => {
 })
 
 server.post('/deletar-livro', (req, res) => {
-    var msg = "Deletado";
+    msg = "Deletado";
 
     connection.query('DELETE FROM livros WHERE id_livros=?',[req.body.id], function(error,results,fields){
         if(error){
@@ -81,6 +132,24 @@ server.post('/deletar-livro', (req, res) => {
     })
 })
 
+server.post('/pesquisa-livro', (req, res) => {
+    const id = req.body.id;
+    msg;
 
+    connection.query('SELECT * FROM livros WHERE id_livros='+id, function (error, results, fields) {
+        var selecionado = results;
+        if (error || results == ""){
+            msg = "Nada Encontrado: \n" + error;
+        }
+        res.render('index', { selecionado, msg, titulo: 'Pesquisa' });
+    });
+})
+
+server.get ('/sair', (req,res) => {
+    sit = "deslogado";
+    id_atual = 0;
+    usuario_atual = "";
+    res.render('login');
+})
 
 server.listen(3000); 

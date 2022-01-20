@@ -1,6 +1,15 @@
-<form method="get" action="/formulario">    
-    <button type="submit" class="add">NOVO</button>
-</form>    
+<p>User: {{usuario_atual}}</p>
+<div id="infos">
+    <form method="get" action="/formulario">    
+        <button type="submit" class="add">NOVO</button>
+    </form>   
+
+    <form method="POST" action="/pesquisa-livro" class="espaco-right">    
+        <input type="text" name="id" placeholder="Pesquisar ID">
+        <button type="submit" class="alt">Pesquisar</button>
+    </form>
+
+</div>
 
 <table class="table">
     <tr>
@@ -35,18 +44,22 @@
 
     {{#selecionado}}
     <tr>
-        <th>{{id}}</th>
+        <th>{{id_livros}}</th>
         <th>{{nome}}</th>
+        <th>{{autor}}</th>
+        <th>{{tipo}}</th>
         <th>
-            <form action="/alterar-livro-form" method="POST">
-                <input type="hidden" name="id" value="{{id}}">
+            <form action="/alterar-livro" method="POST">
+                <input type="hidden" name="id" value="{{id_livros}}">
                 <input type="hidden" name="nome" value="{{nome}}">
-                <button type="submit" class="btn">Alterar</button>
+                <input type="hidden" name="autor" value="{{autor}}">
+                <input type="hidden" name="tipo" value="{{tipo}}">
+                <button type="submit" class="alt">Alterar</button>
             </form>
 
             <form action="/deletar-livro" method="POST">
-                <input type="hidden" name="id" value="{{id}}">
-                <button type="submit" class="btn">Deletar</button>
+                <input type="hidden" name="id" value="{{id_livros}}">
+                <button type="submit" class="alt">Deletar</button>
             </form>
         </th>
     </tr>
