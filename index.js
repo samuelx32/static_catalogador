@@ -4,9 +4,14 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const handlebars = require('express-handlebars');
 const mysql = require('mysql');
+const path = require('path');
 
 server.use(express.json());
-server.engine('handlebars', handlebars.engine({ defaultLayout: 'main' }));
+server.engine('handlebars', handlebars.engine({ 
+    defaultLayout: 'main',
+    layoutsDir: path.join(__dirname, 'views/layouts')
+}));
+
 server.set('view engine', 'handlebars');
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
@@ -35,7 +40,7 @@ var usuario_atual = "";
 //ROTAS
 
 server.get ('/login', (req,res) => {
-    res.render('login');
+    res.render('login', {titulo: 'St4tic',layout: false});
 })
 
 server.get ('/cadastro', (req,res) => {
@@ -49,7 +54,7 @@ server.post ('/valida-login', (req,res) => {
     connection.query('SELECT * FROM usuarios WHERE usuario=? AND senha=?',[usuario, senha], function (error, results) {
         if (error || results == ""){
             msg = "Usuário ou Senha, Inválidos";
-            res.render('login', {msg, titulo: 'St4tic'});
+            res.render('login', {msg, titulo: 'St4tic', layout: false});
         }else{
             results.map(function(item){
                 id_atual = item.id_usuario;
@@ -67,7 +72,7 @@ server.post('/criar-login', (req, res) => {
         if(error){
             msg = "Erro: "+error;
         }
-        res.render('login', { msg, titulo: 'St4tic' });
+        res.render('login', { msg, titulo: 'St4tic', layout: false});
     })
 })
 
@@ -80,7 +85,7 @@ server.get('/', (req, res) => {
             res.render('index', { livros, titulo: 'St4tic', usuario_atual });
         })
     }else{
-        res.render('login');
+        res.render('login',{titulo: 'St4tic',layout: false});
     }
     
 })
@@ -89,7 +94,7 @@ server.get('/formulario', (req, res) => {
     if(sit == "logado"){
        res.render('formulario',{titulo: 'Formulário'});
     }else{
-        res.render('login');
+        res.render('login',{titulo: 'St4tic',layout: false});
     }
 })
 
@@ -133,15 +138,15 @@ server.post('/deletar-livro', (req, res) => {
 })
 
 server.post('/pesquisa-livro', (req, res) => {
-    const id = req.body.id;
+    const nome = req.body.nome;
     msg;
 
-    connection.query('SELECT * FROM livros WHERE id_livros='+id, function (error, results, fields) {
+    connection.query('SELECT * FROM livros WHERE nome=? AND id_usuario=?', [nome, id_atual], function (error, results, fields) {
         var selecionado = results;
         if (error || results == ""){
             msg = "Nada Encontrado: \n" + error;
         }
-        res.render('index', { selecionado, msg, titulo: 'Pesquisa' });
+        res.render('index', { selecionado, msg, titulo: 'Pesquisa',usuario_atual });
     });
 })
 
@@ -149,7 +154,7 @@ server.get ('/sair', (req,res) => {
     sit = "deslogado";
     id_atual = 0;
     usuario_atual = "";
-    res.render('login');
+    res.render('login',{titulo: 'St4tic',layout: false});
 })
 
 server.listen(3000); 

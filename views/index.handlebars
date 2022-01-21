@@ -1,17 +1,17 @@
-<p>User: {{usuario_atual}}</p>
+<p class="espaco-left">User: {{usuario_atual}}</p>
 <div id="infos">
     <form method="get" action="/formulario">    
         <button type="submit" class="add">NOVO</button>
     </form>   
 
     <form method="POST" action="/pesquisa-livro" class="espaco-right">    
-        <input type="text" name="id" placeholder="Pesquisar ID">
+        <input type="text" name="nome" placeholder="Pesquisar Nome">
         <button type="submit" class="alt">Pesquisar</button>
     </form>
 
 </div>
 
-<table class="table">
+<table id="tabela">
     <tr>
         <th>ID</th>
         <th>Nome</th>
